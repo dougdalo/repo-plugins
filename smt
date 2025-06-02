@@ -15,3 +15,10 @@ transforms.wrap.field=payload
   "transforms.insertOp.type": "org.apache.kafka.connect.transforms.InsertField$Value",
   "transforms.insertOp.static.field": "op",
   "transforms.insertOp.static.value": "c"
+
+
+
+"transforms": "fixDecimal",
+"transforms.fixDecimal.type": "org.apache.kafka.connect.transforms.RegexRouter",
+"transforms.fixDecimal.regex": ",",
+"transforms.fixDecimal.replacement": "."
