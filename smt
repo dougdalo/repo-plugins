@@ -22,3 +22,10 @@ transforms.wrap.field=payload
 "transforms.fixDecimal.type": "org.apache.kafka.connect.transforms.RegexRouter",
 "transforms.fixDecimal.regex": ",",
 "transforms.fixDecimal.replacement": "."
+
+
+"transforms": "fixDecimal,wrapToAfter,insertOp",
+
+"transforms.fixDecimal.type": "org.apache.kafka.connect.transforms.Script$Value",
+"transforms.fixDecimal.language": "javascript",
+"transforms.fixDecimal.script": "if (value.VLR_LCT) value.VLR_LCT = value.VLR_LCT.replace(',', '.'); value;"
