@@ -1,0 +1,41 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: sink-sqlserver-jdbc
+  labels:
+    strimzi.io/cluster: meu-connect-cluster # Troque para o nome do seu KafkaConnect
+spec:
+  class: io.debezium.connector.jdbc.JdbcSinkConnector
+  tasksMax: 1
+  config:
+    # Conexão com o SQL Server
+    connection.url: "jdbc:sqlserver://SEU_HOST:1433;databaseName=SUA_DATABASE"
+    connection.user: "SEU_USUARIO"
+    connection.password: "SUA_SENHA"
+
+    # Tópicos de origem (pode ser lista separada por vírgula)
+    topics: "meu-topico-do-kafka"
+
+    # Tabela de destino (nome da tabela no SQL Server)
+    table.name.format: "dbo.SUA_TABELA_DESTINO"
+
+    # Campo de ID primário (opcional, mas recomendado)
+    pk.fields: "id"
+    pk.mode: "record_value"
+
+    # Insere registros; outras opções: upsert/update
+    insert.mode: "insert"
+
+    # Mapeamento de campos do Kafka para colunas do SQL Server (opcional)
+    # fields.mapping: "campo_kafka1:coluna_sql1,campo_kafka2:coluna_sql2"
+
+    # Se os dados do Kafka são JSON, use isso:
+    value.converter: "org.apache.kafka.connect.json.JsonConverter"
+    value.converter.schemas.enable: "false"
+
+    # Número de tentativas em caso de erro
+    max.retries: 10
+    retry.backoff.ms: 3000
+
+    # Modo batch para performance
+    batch.size: 2000
