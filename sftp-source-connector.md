@@ -59,34 +59,9 @@ As melhorias implementadas tornam o fork do `ftp-source-connector` muito mais ro
 ---
 
 # Diagrama de Sequência — Processamento de Arquivo em Batch
+<img width="1600" height="1400" alt="diagrama-sequencia-ftp-source-connector" src="https://github.com/user-attachments/assets/244186f9-c379-4816-ab23-be2e13ca9f4b" />
 
-Kafka Connect Worker
-        |
-        | inicia ciclo poll()
-        v
-+---------------------+
-|   FtpSourceTask     |
-+---------------------+
-        |
-        | Primeira leitura do arquivo?
-        |-----> listFiles()
-        |-----> moveFile() (Staging)
-        |-----> retrieveFileStream()
-        |
-[Loop: até atingir maxRecordsPerPoll ou EOF]
-        |
-        | readLine()
-        |-----> Linha lida?
-        |         |-----> Envia SourceRecord para Kafka Topic
-        |
-        | EOF do arquivo?
-        |-----> close stream
-        |-----> completePending() (FTP only)
-        |-----> moveFile() (Archive)
-        |-----> Reset das variáveis de estado
-        |
-Fim do ciclo poll()
-(No próximo poll, retoma de onde parou até finalizar o arquivo)
+
 
 
 > O diagrama acima ilustra o fluxo: listagem de arquivos, staging, leitura incremental em batch, envio para Kafka, arquivamento e retomada no próximo poll.
